@@ -1,0 +1,38 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo 'styling, linting, type-checking, testing and building your project before commit'
+
+# Check prettier standards
+yarn check-format || (
+    echo 'Failed type check. Syling is not accepted. Run `yarn format` to properly style your code, add changes and try again';
+    false;
+)
+
+# Check eslint standards
+yarn lint:fix || (
+    echo 'Eslint check failed. Make all the above changes listed, add changes and try again';
+    false;
+)
+
+# Check typescript standards
+yarn check-types || (
+    echo 'Failed type check. Please correct all the above errors, add changes and try again';
+    false;
+)
+
+# Run test
+# yarn test || (
+#     echo 'Test failed. Ensure all test pass, add changes and try again';
+#     false;
+# )
+
+# Run build
+echo 'Looks good. Trying to build now ...';
+yarn build || (
+    echo 'Build failed. View the errors above to see why';
+    false;
+)
+
+# If everything is fine
+echo 'Great job. Commiting code finally...';

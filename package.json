@@ -1,18 +1,42 @@
 {
-  "name": "turborepo-basic-shared",
+  "name": "acme-erp-shared",
   "version": "0.0.0",
+  "description": "An Enterprise Relationship application",
+  "author": "Odinaka Joy",
+  "license": "ISC",
+  "main": "server.js",
   "private": true,
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "prepare": "husky install",
     "dev": "turbo run dev --parallel",
+    "format": "prettier --write \"**/*.{ts,tsx}\"",
+    "check-format": "prettier --check \"**/*.{ts,tsx}\"",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "lint:fix": "turbo run lint:fix",
+    "check-types": "turbo run check-types",
+    "test": "turbo run test",
+    "build": "turbo run build"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.4.0",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "esbuild": "^0.14.11",
+    "esbuild-jest": "^0.5.0",
+    "husky": "^7.0.4",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.4.7",
+    "jest-watch-typeahead": "^1.0.0",
+    "lint-staged": "^12.1.7",
+    "msw": "^0.36.4",
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
@@ -27,12 +51,36 @@
           ".next/**"
         ]
       },
+      "test": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "coverage/**"
+        ]
+      },
       "lint": {
         "outputs": []
       },
       "dev": {
         "cache": false
       }
+    }
+  },
+  "lint-staged": {
+    "apps/**/*.{js,ts,jsx,tsx}": [
+      "eslint --fix"
+    ],
+    "packages/ui/**/*.{js,ts,jsx,tsx}": [
+      "eslint --fix"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "engines": {
