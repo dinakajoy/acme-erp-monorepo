@@ -1,4 +1,4 @@
-# Turborepo starter
+# ACME ERP APPLICATION
 
 This is an arp application with a monorepo setup using turborepo. The server (a REST API) is completed using node.js and expres.js
 
