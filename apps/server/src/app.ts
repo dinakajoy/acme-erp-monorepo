@@ -6,7 +6,7 @@ import createError from 'http-errors';
 import session from 'express-session';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
+import dotenv from 'dotenv-safe';
 import swaggerUi from 'swagger-ui-express';
 import authRoute from './api/routes/auth.route';
 import employeeRoute from './api/routes/employee.route';

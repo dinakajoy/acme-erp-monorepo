@@ -1,10 +1,9 @@
-const path = require('path')
+const path = require('path');
 
-const fromRoot = d => path.join(__dirname, d)
+const fromRoot = (d) => path.join(__dirname, d);
 
 module.exports = {
-  // roots: [fromRoot('apps/frontend'), fromRoot('apps/server')],
-  roots: [fromRoot('apps/server')],
+  roots: [fromRoot('apps/server'), fromRoot('apps/frontend')],
   resetMocks: true,
   coveragePathIgnorePatterns: [],
   collectCoverageFrom: ['<rootDir>/src/**/*.{js,ts,tsx}'],
@@ -17,7 +16,7 @@ module.exports = {
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   moduleDirectories: ['node_modules'],
   moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
-  // moduleNameMapper: {
-  //   '@src/(.*)': fromRoot('apps/frontend/src/$1'),
-  // },
+  moduleNameMapper: {
+    '@src/(.*)': fromRoot('apps/frontend/src/$1'),
+  },
 };

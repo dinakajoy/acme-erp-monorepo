@@ -2,14 +2,16 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
+  "main": "index.js",
   "scripts": {
-    "dev": "dotenv -e .env.development nodemon",
+    "dev": "dotenv -e .env.test nodemon",
     "lint": "eslint . --ext ts --ext js",
-    "lint:fix": "eslint --fix .",
+    "lint-fix": "eslint --fix .",
     "check-types": "tsc --pretty --noEmit",
     "test": "dotenv -e .env.test jest --coverage",
     "build": "tsc -p tsconfig.prod.json",
-    "start": "dotenv -e .env node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/server.js"
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/server.js"
   },
   "dependencies": {
     "@prisma/client": "^3.8.0",

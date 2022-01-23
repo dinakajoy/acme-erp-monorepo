@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import ROLES_LIST from '../../config/roles_list';
 import acountLimiter from '../middlewares/rateLimiterForLogin';
 import { validation, validate } from '../validations/employee.validation';
@@ -19,7 +19,7 @@ router.post(
   acountLimiter,
   validation(),
   validate,
-  // isAuthorized(ROLES_LIST.HumanResource, ROLES_LIST.Administrator),
+  isAuthorized(ROLES_LIST.HumanResource, ROLES_LIST.Administrator),
   createController
 );
 router.get('/', findController);

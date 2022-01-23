@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from 'dotenv-safe';
 import app from './app';
 import logger from './config/logger';
 

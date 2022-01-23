@@ -2,10 +2,11 @@
   "name": "frontend",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "lint": "next lint",
-    "lint:fix": "eslint --fix .",
+    "lint-fix": "eslint --fix .",
     "check-types": "tsc --pretty --noEmit",
     "test": "jest --coverage",
     "build": "next build",

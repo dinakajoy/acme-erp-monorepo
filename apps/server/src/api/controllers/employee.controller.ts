@@ -4,9 +4,11 @@ import { omit } from 'lodash';
 import logger from '../../config/logger';
 import redisClient from '../../config/redisClient';
 import isUser from '../services/user.service';
-import { hashPassword } from '../utils/helpers';
+import { hashPassword, signAccessToken } from '../utils/helpers';
 import { CustomException } from '../utils/errors';
 import { IEmployeeWithoutPasswordAndRole } from '../interfaces/employee';
+import { ICreateToken } from '../interfaces/token';
+import mail from '../services/mail.service';
 
 const prisma = new PrismaClient();
 
@@ -15,12 +17,32 @@ export const createController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const existingUser = await isUser(req.body.email, next);
+  const { email } = req.body;
+  const existingUser = await isUser(email, next);
   if (existingUser) {
     return next(new (CustomException as any)(400, 'Employee already exist'));
   }
   const password = await hashPassword('Acme@2022', next);
   try {
+    const createToken: ICreateToken = {
+      employeeInfo: {
+        email: req.body.email,
+        role: req.body.role,
+      },
+      isRefreshToken: false,
+    };
+    const accessToken = await signAccessToken(createToken, next);
+    const mailData = {
+      from: process.env.SENDER_EMAIL || 'mymail@mail.com',
+      to: email,
+      subject: 'Imprtant Message From ACME Company',
+      html: `<b>Hey there! <br> An account was just created for you. Please change your password <br/> <a href="${accessToken}">here</a>`,
+    };
+    const mailSent = await mail(mailData, next);
+    if (!mailSent) {
+      return next(new (CustomException as any)(500, 'Operation unsuccessful'));
+    }
+
     const user = await prisma.user.create({
       data: {
         ...req.body,
@@ -31,6 +53,7 @@ export const createController = async (
       'role',
       'password',
     ]);
+
     return res.status(201).json({
       status: 'success',
       payload: result,

@@ -2,9 +2,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import { get } from 'lodash';
+import dotenv from 'dotenv-safe';
 import { verifyAccessToken } from '../utils/helpers';
 import { NotFoundException, UnauthorizedException } from '../utils/errors';
-import dotenv from 'dotenv';
 
 dotenv.config();
 

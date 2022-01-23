@@ -4,7 +4,6 @@
   "description": "An Enterprise Relationship application",
   "author": "Odinaka Joy",
   "license": "ISC",
-  "main": "server.js",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -16,7 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "check-format": "prettier --check \"**/*.{ts,tsx}\"",
     "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
+    "lint-fix": "turbo run lint-fix",
     "check-types": "turbo run check-types",
     "test": "turbo run test",
     "build": "turbo run build"
@@ -42,14 +41,17 @@
   },
   "turbo": {
     "pipeline": {
-      "build": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "dist/**",
-          ".next/**"
-        ]
+      "dev": {
+        "cache": false
+      },
+      "lint": {
+        "outputs": []
+      },
+      "lint-fix": {
+        "outputs": []
+      },
+      "check-types": {
+        "outputs": []
       },
       "test": {
         "dependsOn": [
@@ -59,11 +61,14 @@
           "coverage/**"
         ]
       },
-      "lint": {
-        "outputs": []
-      },
-      "dev": {
-        "cache": false
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "dist/**",
+          ".next/**"
+        ]
       }
     }
   },

@@ -27,7 +27,7 @@ export const signAccessToken = (
     jwt.sign(
       { payload: payload.employeeInfo },
       payload.isRefreshToken ? refreshTokenSecret : accessTokenSecret,
-      // { expiresIn: payload.isRefreshToken ? '3d' : '30m' },
+      { expiresIn: payload.isRefreshToken ? '3d' : '30m' },
       (err, token) => {
         if (err) {
           logger.error(err.message);
@@ -48,10 +48,8 @@ export const verifyAccessToken = (
       tokenData.isRefreshToken ? refreshTokenSecret : accessTokenSecret,
       (err: any, payload) => {
         if (err) {
-          const message =
-            err.name === 'JsonWebTokenError' ? 'Unauthorized' : err.message;
-          logger.error(message);
-          next(new (CustomException as any)(500, message));
+          logger.error(err.message);
+          next(new (CustomException as any)(500, err.message));
         }
         resolve(payload);
       }

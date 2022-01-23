@@ -30,27 +30,23 @@ describe('finance', () => {
           .set('Accept', 'application/json')
           .send(newFinanceData);
 
-        expect(statusCode).toBe(401);
-        expect(body).toEqual({
+        expect(statusCode).toBe(403);
+        expect(body).toMatchObject({
           errors: 'Please login or create an account',
           status: 'error',
         });
       });
     });
 
-    describe('given that you are not logged in as an account staff or administrator', () => {
+    describe('given that you are logged in as with an expired or invalid token', () => {
       it('should return an unauthorized error', async () => {
-        const { statusCode, body } = await supertest(app)
+        const { statusCode } = await supertest(app)
           .post('/api/finance')
           .set('Accept', 'application/json')
           .set('authorization', process.env.WRONG_JWT_DATA || '')
           .send(newFinanceData);
 
-        expect(statusCode).toBe(401);
-        expect(body).toEqual({
-          status: 'error',
-          errors: 'Unauthorized',
-        });
+        expect(statusCode).toBe(500);
       });
     });
 

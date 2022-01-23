@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import isAuthenticated from '../middlewares/isAuthenticated';
 import acountLimiter from '../middlewares/rateLimiterForLogin';
 import {

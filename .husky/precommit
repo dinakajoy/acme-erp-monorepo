@@ -22,10 +22,10 @@ yarn check-types || (
 )
 
 # Run test
-# yarn test || (
-#     echo 'Test failed. Ensure all test pass, add changes and try again';
-#     false;
-# )
+yarn test || (
+    echo 'Test failed. Ensure all test pass, add changes and try again';
+    false;
+)
 
 # Run build
 echo 'Looks good. Trying to build now ...';

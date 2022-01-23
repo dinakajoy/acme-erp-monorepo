@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import logger from '../../config/logger';
@@ -15,11 +14,12 @@ const isAuthenticated = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = get(req, 'headers.authorization', '').replace(/^Bearer\s/, '');
-  if (!token) {
+  const tokenExist = req.headers['authorization'];
+  if (!tokenExist) {
     next(new (NotFoundException as any)());
   } else {
     try {
+      const token = tokenExist.split(' ')[1];
       const decodedToken: JwtPayload | undefined = await verifyAccessToken(
         { token, isRefreshToken: false },
         next

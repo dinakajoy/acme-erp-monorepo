@@ -45,6 +45,12 @@ export const loginController = async (
   if (!checkPassword) {
     return next(new (InvalidException as any)());
   }
+  if (password === 'Acme@2022') {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Please reset your password',
+    });
+  }
   const createAccessToken: ICreateToken = {
     employeeInfo: {
       email: user.email,
@@ -102,10 +108,13 @@ export const forgotPasswordController = async (
   const mailData = {
     from: process.env.SENDER_EMAIL || 'mymail@mail.com',
     to: user.email,
-    subject: 'Sending Email using Node.js',
-    html: `<b>Hey there! <br> This is our first message sent with Nodemailer<br/> ${accessToken}`,
+    subject: 'Account Update',
+    html: `<b>Hey there! <br> This is the link to reset your password as requested <br/> ${accessToken}`,
   };
-  await mail(mailData, next);
+  const mailSent = await mail(mailData, next);
+  if (!mailSent) {
+    return next(new (CustomException as any)(500, 'Operation unsuccessful'));
+  }
   return res.status(200).json({
     status: 'success',
     message: 'Please check your mail',

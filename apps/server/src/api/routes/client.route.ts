@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import ROLES_LIST from '../../config/roles_list';
 import { validation, validate } from '../validations/client.validation';
 import {

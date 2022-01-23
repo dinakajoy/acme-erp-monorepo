@@ -2,7 +2,7 @@
 /* eslint-disable import/no-mutable-exports */
 /* eslint-disable import/no-unresolved */
 import request from 'supertest';
-import dotenv from 'dotenv';
+import dotenv from 'dotenv-safe';
 import app from '../app';
 
 dotenv.config();
@@ -58,19 +58,15 @@ describe('employee', () => {
       });
     });
 
-    describe('given that you are not logged in as a human-resource staff or administrator', () => {
+    describe('given that you are logged in as with an expired or invalid token', () => {
       it('should return an unauthorized error', async () => {
-        const { statusCode, body } = await request(app)
+        const { statusCode } = await request(app)
           .post('/api/employees')
           .set('Accept', 'application/json')
           .set('authorization', process.env.WRONG_JWT_DATA || '')
           .send(newEmployeeData);
 
-        expect(statusCode).toBe(401);
-        expect(body).toEqual({
-          status: 'error',
-          errors: 'You are not authorized',
-        });
+        expect(statusCode).toBe(500);
       });
     });
 
